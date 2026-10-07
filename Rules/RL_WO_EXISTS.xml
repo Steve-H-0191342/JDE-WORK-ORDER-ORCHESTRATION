@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Rule matchType="matchAll">
+  <omwObjectName>RUL_2609230007COG</omwObjectName>
+  <studioVersion>9.2.5.6</studioVersion>
+  <name>RL_WO_EXISTS</name>
+  <shortDesc>RL_WO_EXISTS</shortDesc>
+  <productCode>55</productCode>
+  <locale>en</locale>
+  <updateTime>1790218138427</updateTime>
+  <scriptLanguage>groovy</scriptLanguage>
+  <conditions>
+    <conditions operator="=" type="Numeric">
+      <value1>
+        <value>ExistingWO</value>
+      </value1>
+      <value2 type="Numeric" literalValue="true">
+        <value>1</value>
+      </value2>
+    </conditions>
+  </conditions>
+</Rule>

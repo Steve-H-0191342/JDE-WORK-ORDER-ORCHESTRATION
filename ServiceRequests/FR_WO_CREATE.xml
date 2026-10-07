@@ -1,0 +1,154 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ServiceRequest>
+  <omwObjectName>SRE_2609230006COG</omwObjectName>
+  <studioVersion>9.2.5.6</studioVersion>
+  <name>FR_WO_CREATE</name>
+  <shortDesc>FR_WO_CREATE</shortDesc>
+  <productCode>55</productCode>
+  <locale>en</locale>
+  <updateTime>1790273610426</updateTime>
+  <group>0</group>
+  <appStack>true</appStack>
+  <returnFromAllForms>true</returnFromAllForms>
+  <bypassER>false</bypassER>
+  <serviceRequestSteps>
+    <serviceRequestSteps type="formRequest" appOID="P48201_W48201F" version="ZJDE0002" bypassFormServiceEREvent="true">
+      <formTitle>Work With Work Orders</formTitle>
+      <formActions>
+        <formActions type="action">
+          <controlID>131</controlID>
+          <action>DoAction</action>
+          <title>Add</title>
+        </formActions>
+      </formActions>
+      <stopOnWarning>false</stopOnWarning>
+      <maxPageSize>0</maxPageSize>
+      <pageSize>1000</pageSize>
+      <outputType>GRID_DATA</outputType>
+      <turboMode>Low</turboMode>
+      <enableAsyncEvents>false</enableAsyncEvents>
+      <queryObjectName>_AllRecords</queryObjectName>
+      <allowCache>false</allowCache>
+      <forceUpdate>false</forceUpdate>
+      <cacheTime>0</cacheTime>
+      <bypassER>true</bypassER>
+    </serviceRequestSteps>
+    <serviceRequestSteps type="formRequest" appOID="P48014_W48014A" version="ZJDE0001" bypassFormServiceEREvent="true">
+      <formTitle>Enter Work Orders</formTitle>
+      <formActions>
+        <formActions type="input">
+          <input>Order_Number</input>
+          <mappedTo>14</mappedTo>
+          <action>SetControlValue</action>
+          <defaultValue type="Numeric" literalValue="true">
+            <value>${WorkOrderNumber}</value>
+          </defaultValue>
+          <title>Order Number</title>
+        </formActions>
+        <formActions type="input">
+          <input>Description</input>
+          <mappedTo>18</mappedTo>
+          <action>SetControlValue</action>
+          <defaultValue literalValue="true">
+            <value>${WorkOrderDescription}</value>
+          </defaultValue>
+          <title>Description</title>
+        </formActions>
+        <formActions type="input">
+          <input>Status_Comment</input>
+          <mappedTo>22</mappedTo>
+          <action>SetControlValue</action>
+          <defaultValue literalValue="true">
+            <value>${WorkOrderStatusComment}</value>
+          </defaultValue>
+          <title>Status Comment</title>
+        </formActions>
+        <formActions type="input">
+          <input>Reference</input>
+          <mappedTo>24</mappedTo>
+          <action>SetControlValue</action>
+          <defaultValue literalValue="true">
+            <value>${WorkOrderReference1}</value>
+          </defaultValue>
+          <title>Search X-Ref</title>
+        </formActions>
+        <formActions type="input">
+          <input>Type</input>
+          <mappedTo>82</mappedTo>
+          <action>SetControlValue</action>
+          <defaultValue literalValue="true">
+            <value>${WorkOrderType}</value>
+          </defaultValue>
+          <title>Type</title>
+        </formActions>
+        <formActions type="input">
+          <input>Status</input>
+          <mappedTo>98</mappedTo>
+          <action>SetControlValue</action>
+          <defaultValue literalValue="true">
+            <value>${WorkOrderStatus}</value>
+          </defaultValue>
+          <title>W.O. Status</title>
+        </formActions>
+        <formActions type="input">
+          <input>Branch</input>
+          <mappedTo>textMMCUF48010</mappedTo>
+          <action>SetControlValue</action>
+          <defaultValue literalValue="true">
+            <value>${WorkOrderBranch}</value>
+          </defaultValue>
+          <title>Branch</title>
+        </formActions>
+        <formActions type="input">
+          <input>Reference_2</input>
+          <mappedTo>textVR02F48010</mappedTo>
+          <action>SetControlValue</action>
+          <defaultValue literalValue="true">
+            <value>${WorkOrderReference2}</value>
+          </defaultValue>
+          <title>Reference 2</title>
+        </formActions>
+        <formActions type="input">
+          <input>Business_Unit</input>
+          <mappedTo>30</mappedTo>
+          <action>SetControlValue</action>
+          <defaultValue literalValue="true">
+            <value>${WorkOrderBU}</value>
+          </defaultValue>
+          <title>Charge to BU</title>
+        </formActions>
+        <formActions type="action">
+          <controlID>11</controlID>
+          <action>DoAction</action>
+          <title>OK</title>
+        </formActions>
+        <formActions type="action">
+          <controlID>return</controlID>
+          <title>Return Form Data</title>
+        </formActions>
+      </formActions>
+      <returnControlIDs>14</returnControlIDs>
+      <returnValueHeaderNames>CreateOrderNumber</returnValueHeaderNames>
+      <stopOnWarning>false</stopOnWarning>
+      <maxPageSize>0</maxPageSize>
+      <pageSize>1000</pageSize>
+      <outputType>GRID_DATA</outputType>
+      <turboMode>Low</turboMode>
+      <enableAsyncEvents>false</enableAsyncEvents>
+      <allowCache>false</allowCache>
+      <forceUpdate>false</forceUpdate>
+      <cacheTime>0</cacheTime>
+      <bypassER>true</bypassER>
+      <returnControls>
+        <formControlMap>
+          <C0_14>
+            <controlID>14</controlID>
+            <variable>CreateOrderNumber</variable>
+            <title>Order Number</title>
+            <dataType>9</dataType>
+          </C0_14>
+        </formControlMap>
+      </returnControls>
+    </serviceRequestSteps>
+  </serviceRequestSteps>
+</ServiceRequest>

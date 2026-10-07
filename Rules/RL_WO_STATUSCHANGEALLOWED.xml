@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Rule matchType="matchAny">
+  <omwObjectName>RUL_2609240003COG</omwObjectName>
+  <studioVersion>9.2.5.6</studioVersion>
+  <name>RL_WO_STATUSCHANGEALLOWED</name>
+  <shortDesc>RL_WO_STATUSCHANGEALLOWED</shortDesc>
+  <productCode>55</productCode>
+  <locale>en</locale>
+  <updateTime>1790261374468</updateTime>
+  <description></description>
+  <scriptLanguage>groovy</scriptLanguage>
+  <conditions>
+    <conditions operator="=" type="String">
+      <value1>
+        <value>NewStatus</value>
+      </value1>
+      <value2 type="">
+        <value>NextStatus</value>
+      </value2>
+    </conditions>
+    <conditions operator="=" type="String">
+      <value1>
+        <value>NewStatus</value>
+      </value1>
+      <value2 type="">
+        <value>AllowedStatus1</value>
+      </value2>
+    </conditions>
+    <conditions operator="=" type="String">
+      <value1>
+        <value>NewStatus</value>
+      </value1>
+      <value2 type="">
+        <value>AllowedStatus2</value>
+      </value2>
+    </conditions>
+    <conditions operator="=" type="String">
+      <value1>
+        <value>NewStatus</value>
+      </value1>
+      <value2 type="">
+        <value>AllowedStatus3</value>
+      </value2>
+    </conditions>
+    <conditions operator="=" type="String">
+      <value1>
+        <value>NewStatus</value>
+      </value1>
+      <value2 type="">
+        <value>AllowedStatus4</value>
+      </value2>
+    </conditions>
+    <conditions operator="=" type="String">
+      <value1>
+        <value>NewStatus</value>
+      </value1>
+      <value2 type="">
+        <value>AllowedStatus5</value>
+      </value2>
+    </conditions>
+    <conditions operator="=" type="String">
+      <value1>
+        <value>CurrentStatus</value>
+      </value1>
+      <value2 type="">
+        <value>TargetStatus</value>
+      </value2>
+    </conditions>
+  </conditions>
+</Rule>

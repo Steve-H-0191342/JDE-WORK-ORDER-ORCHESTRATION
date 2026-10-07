@@ -1,0 +1,125 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ServiceRequest>
+  <omwObjectName>SRE_2609240008COG</omwObjectName>
+  <studioVersion>9.2.5.6</studioVersion>
+  <name>FX_WO_CREATE_RESPONSE</name>
+  <shortDesc>FX_WO_CREATE_RESPONSE</shortDesc>
+  <productCode>55</productCode>
+  <locale>en</locale>
+  <updateTime>1790278356354</updateTime>
+  <group>0</group>
+  <appStack>false</appStack>
+  <returnFromAllForms>false</returnFromAllForms>
+  <bypassER>false</bypassER>
+  <serviceRequestSteps>
+    <serviceRequestSteps type="customServiceRequest">
+      <attributesToSet>
+        <attributesToSet name="CreateOrderNumber">
+          <input>CreateOrderNumber</input>
+          <defaultValue>
+            <value>0</value>
+          </defaultValue>
+        </attributesToSet>
+        <attributesToSet name="CreateBUCheck">
+          <input>CreateBUCheck</input>
+          <defaultValue>
+            <value>1</value>
+          </defaultValue>
+        </attributesToSet>
+        <attributesToSet name="CreateBPCheck">
+          <input>CreateBPCheck</input>
+          <defaultValue>
+            <value>1</value>
+          </defaultValue>
+        </attributesToSet>
+        <attributesToSet name="CreateStatusCheck">
+          <input>CreateStatusCheck</input>
+          <defaultValue>
+            <value>1</value>
+          </defaultValue>
+        </attributesToSet>
+      </attributesToSet>
+      <scriptLanguage>groovy</scriptLanguage>
+      <groovyMethod>import com.oracle.e1.common.OrchestrationAttributes;
+import java.text.SimpleDateFormat;
+import groovy.json.*;
+
+HashMap&lt;String, Object> main(OrchestrationAttributes orchAttr, HashMap inputMap)
+{
+HashMap&lt;String, Object> returnMap = new HashMap&lt;String, Object>();
+
+String CreateOrderNumber = (String) inputMap.get("CreateOrderNumber");
+
+BigDecimal CreateBUCheck = null;
+String CreateBUCheck_str = (String)inputMap.get("CreateBUCheck");
+if(CreateBUCheck_str != null &amp;&amp; !CreateBUCheck_str.trim().isEmpty())
+{
+CreateBUCheck = new BigDecimal(CreateBUCheck_str);
+}    
+
+BigDecimal CreateBPCheck = null;
+String CreateBPCheck_str = (String)inputMap.get("CreateBPCheck");
+if(CreateBPCheck_str != null &amp;&amp; !CreateBPCheck_str.trim().isEmpty())
+{
+CreateBPCheck = new BigDecimal(CreateBPCheck_str);
+}      
+
+BigDecimal CreateStatusCheck = null;
+String CreateStatusCheck_str = (String)inputMap.get("CreateStatusCheck");
+if(CreateStatusCheck_str != null &amp;&amp; !CreateStatusCheck_str.trim().isEmpty())
+{
+CreateStatusCheck = new BigDecimal(CreateStatusCheck_str);
+}    
+
+String Status = "UNKNOWN";
+String Action = "UNKNOWN";
+String Errors = "";
+
+if(CreateBUCheck==0) //BU check did NOT pass
+{
+Action = "ERROR";
+Status = "FAILURE";
+Errors = Errors + "Supplied Business Unit Does Not Exist or Is Not Available For Posting\n";    
+}
+if(CreateBPCheck==0) //BP check did NOT pass
+{
+Action = "ERROR";
+Status = "FAILURE";
+Errors = Errors + "Supplied Branch Plant Does Not Exist or Is Inactive\n"; 
+}    
+if(CreateStatusCheck==0) //Status check did NOT pass
+{
+Action = "ERROR";
+Status = "FAILURE";
+Errors = Errors + "Supplied Status is not valid\n"; 
+
+}      
+if(CreateOrderNumber!=null &amp;&amp; !CreateOrderNumber.trim().isEmpty()) //If a value was returned it is safe to assume the record was Successfully Created
+{
+Action = "CREATE";
+Status = "SUCCESS";
+
+}
+
+returnMap.put("Action", Action);        
+returnMap.put("Status", Status);   
+returnMap.put("Errors", Errors);   
+
+return returnMap;
+}</groovyMethod>
+      <outputs>
+        <outputs variableName="CreateAction">
+          <output>Action</output>
+        </outputs>
+        <outputs variableName="CreateStatus">
+          <output>Status</output>
+        </outputs>
+        <outputs variableName="CreateErrors">
+          <output>Errors</output>
+        </outputs>
+      </outputs>
+      <array>Errors</array>
+      <isAsynch>false</isAsynch>
+    </serviceRequestSteps>
+  </serviceRequestSteps>
+</ServiceRequest>

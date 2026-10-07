@@ -1,0 +1,187 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ServiceRequest>
+  <omwObjectName>SRE_2609230010COG</omwObjectName>
+  <studioVersion>9.2.5.6</studioVersion>
+  <name>FR_WO_UPDATE</name>
+  <shortDesc>FR_WO_UPDATE</shortDesc>
+  <productCode>55</productCode>
+  <locale>en</locale>
+  <updateTime>1790274603256</updateTime>
+  <group>0</group>
+  <appStack>true</appStack>
+  <returnFromAllForms>true</returnFromAllForms>
+  <bypassER>false</bypassER>
+  <serviceRequestSteps>
+    <serviceRequestSteps type="formRequest" appOID="P48201_W48201F" version="ZJDE0002" bypassFormServiceEREvent="true">
+      <formTitle>Work With Work Orders</formTitle>
+      <formActions>
+        <formActions type="action">
+          <controlID>225.382</controlID>
+          <action>TabClick</action>
+          <title>Order Definition</title>
+        </formActions>
+        <formActions type="input">
+          <input>${WorkOrderType}</input>
+          <mappedTo>387</mappedTo>
+          <action>SetControlValue</action>
+          <defaultValue literalValue="true">
+            <value>O</value>
+          </defaultValue>
+          <title>Type</title>
+        </formActions>
+        <formActions type="input">
+          <input>${WorkOrderNumber}</input>
+          <mappedTo>1[7]</mappedTo>
+          <action>SetQBEValue</action>
+          <title>Grid</title>
+        </formActions>
+        <formActions type="action">
+          <controlID>6</controlID>
+          <action>DoAction</action>
+          <title>Find</title>
+        </formActions>
+        <formActions type="detail">
+          <inputGrid>GridIn_1_1</inputGrid>
+          <mappedTo>1</mappedTo>
+          <rowData>
+            <rowData>
+              <input>Row_Number_for_Update</input>
+              <mappedTo>1</mappedTo>
+              <action>UpdateRow</action>
+              <defaultValue literalValue="true">
+                <value>1</value>
+              </defaultValue>
+            </rowData>
+            <rowData>
+              <mappedTo>7</mappedTo>
+              <action>ClickGridCell</action>
+            </rowData>
+          </rowData>
+        </formActions>
+      </formActions>
+      <stopOnWarning>false</stopOnWarning>
+      <maxPageSize>0</maxPageSize>
+      <pageSize>1000</pageSize>
+      <outputType>GRID_DATA</outputType>
+      <turboMode>Low</turboMode>
+      <enableAsyncEvents>false</enableAsyncEvents>
+      <queryObjectName>_AllRecords</queryObjectName>
+      <allowCache>false</allowCache>
+      <forceUpdate>false</forceUpdate>
+      <cacheTime>0</cacheTime>
+      <bypassER>true</bypassER>
+    </serviceRequestSteps>
+    <serviceRequestSteps type="formRequest" appOID="P48014_W48014A" version="ZJDE0001" bypassFormServiceEREvent="true">
+      <formTitle>Enter Work Orders</formTitle>
+      <formActions>
+        <formActions type="input">
+          <input>${WorkOrderStatusComment}</input>
+          <mappedTo>22</mappedTo>
+          <action>SetControlValue</action>
+          <title>Status Comment</title>
+        </formActions>
+        <formActions type="input">
+          <input>${WorkOrderReference1}</input>
+          <mappedTo>24</mappedTo>
+          <action>SetControlValue</action>
+          <title>Search X-Ref</title>
+        </formActions>
+        <formActions type="input">
+          <input>${WorkOrderReference2}</input>
+          <mappedTo>textVR02F48010</mappedTo>
+          <action>SetControlValue</action>
+          <title>Reference 2</title>
+        </formActions>
+        <formActions type="input">
+          <input>${WorkOrderStatus}</input>
+          <mappedTo>98</mappedTo>
+          <action>SetControlValue</action>
+          <title>W.O. Status</title>
+        </formActions>
+        <formActions type="input">
+          <input>${WorkOrderDescription}</input>
+          <mappedTo>18</mappedTo>
+          <action>SetControlValue</action>
+          <title>Description</title>
+        </formActions>
+        <formActions type="input">
+          <input>${WorkOrderBU}</input>
+          <mappedTo>30</mappedTo>
+          <action>SetControlValue</action>
+          <title>Charge to BU</title>
+        </formActions>
+        <formActions type="action">
+          <controlID>11</controlID>
+          <action>DoAction</action>
+          <title>OK</title>
+        </formActions>
+        <formActions type="action">
+          <controlID>return</controlID>
+          <title>Return Form Data</title>
+        </formActions>
+      </formActions>
+      <returnControlIDs>14</returnControlIDs>
+      <returnValueHeaderNames>UpdateOrderNumber</returnValueHeaderNames>
+      <stopOnWarning>false</stopOnWarning>
+      <maxPageSize>0</maxPageSize>
+      <pageSize>1000</pageSize>
+      <outputType>GRID_DATA</outputType>
+      <turboMode>Low</turboMode>
+      <enableAsyncEvents>false</enableAsyncEvents>
+      <allowCache>false</allowCache>
+      <forceUpdate>false</forceUpdate>
+      <cacheTime>0</cacheTime>
+      <bypassER>true</bypassER>
+      <returnControls>
+        <formControlMap>
+          <C0_14>
+            <controlID>14</controlID>
+            <variable>UpdateOrderNumber</variable>
+            <title>Order Number</title>
+            <dataType>9</dataType>
+          </C0_14>
+        </formControlMap>
+      </returnControls>
+    </serviceRequestSteps>
+    <serviceRequestSteps type="formRequest" appOID="P48201_W48201F" version="ZJDE0002" formMode="R" bypassFormServiceEREvent="true">
+      <formTitle>Work With Work Orders</formTitle>
+      <formActions>
+        <formActions type="action">
+          <controlID>return</controlID>
+          <title>Return Form Data</title>
+        </formActions>
+      </formActions>
+      <returnControlIDs>1[7]</returnControlIDs>
+      <returnValueHeaderNames></returnValueHeaderNames>
+      <returnValueRow1Names>UpdateOrderNumber</returnValueRow1Names>
+      <stopOnWarning>false</stopOnWarning>
+      <maxPageSize>0</maxPageSize>
+      <pageSize>1000</pageSize>
+      <outputType>GRID_DATA</outputType>
+      <turboMode></turboMode>
+      <enableAsyncEvents>false</enableAsyncEvents>
+      <queryObjectName></queryObjectName>
+      <allowCache>false</allowCache>
+      <forceUpdate>false</forceUpdate>
+      <cacheTime>0</cacheTime>
+      <bypassER>false</bypassER>
+      <returnControls>
+        <formControlMap>
+          <C0_1>
+            <controlID>1</controlID>
+            <variable></variable>
+            <title>Work With Work Orders - Grid</title>
+            <columns>
+              <G0_1_C7>
+                <controlID>7</controlID>
+                <variable>UpdateOrderNumber</variable>
+                <title>    Order Number</title>
+                <dataType>9</dataType>
+              </G0_1_C7>
+            </columns>
+          </C0_1>
+        </formControlMap>
+      </returnControls>
+    </serviceRequestSteps>
+  </serviceRequestSteps>
+</ServiceRequest>

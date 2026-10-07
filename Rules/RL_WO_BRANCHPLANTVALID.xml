@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Rule matchType="matchAll">
+  <omwObjectName>RUL_2609240007COG</omwObjectName>
+  <studioVersion>9.2.5.6</studioVersion>
+  <name>RL_WO_BRANCHPLANTVALID</name>
+  <shortDesc>RL_WO_BRANCHPLANTVALID</shortDesc>
+  <productCode>55</productCode>
+  <locale>en</locale>
+  <updateTime>1790275768987</updateTime>
+  <scriptLanguage>groovy</scriptLanguage>
+  <conditions>
+    <conditions operator=">" type="Numeric">
+      <value1>
+        <value>validBPcount</value>
+      </value1>
+      <value2 type="Numeric" literalValue="true">
+        <value>0</value>
+      </value2>
+    </conditions>
+  </conditions>
+</Rule>

@@ -1,0 +1,423 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Orchestration>
+  <omwObjectName>ORC_2609230001COG</omwObjectName>
+  <studioVersion>9.2.5.6</studioVersion>
+  <name>ORCH_WORKORDERCREATEUPDATE</name>
+  <shortDesc>ORCH_WORKORDERCREATEUPDATE</shortDesc>
+  <version>v3</version>
+  <productCode>55</productCode>
+  <locale>en</locale>
+  <updateTime>1790278396952</updateTime>
+  <description></description>
+  <groovyOutputScript>import groovy.json.JsonSlurper;
+import groovy.json.JsonBuilder;
+import com.oracle.e1.common.OrchestrationAttributes;
+String main(OrchestrationAttributes orchAttr, String input)
+{
+  def jsonIn = new JsonSlurper().parseText(input);
+  // modify jsonIn;
+  // Remove keys ONLY if the value is "empty"
+   jsonIn = jsonIn.findAll { key, value ->
+    !(
+        value == null ||                            // null
+        (value instanceof String &amp;&amp; value.trim() == "") ||       // empty string
+        (value instanceof Collection &amp;&amp; value.isEmpty()) ||      // empty list
+        (value instanceof Map &amp;&amp; value.isEmpty())                // empty object
+    )
+  }
+  def jsonOut = new JsonBuilder(jsonIn).toString();
+  // orchAttr.writeWarn("custom log entry - warning");
+  // orchAttr.writeDebug("custom log entry - debug");
+  return jsonOut;
+}</groovyOutputScript>
+  <scriptLanguage>groovy</scriptLanguage>
+  <message></message>
+  <warningMessage></warningMessage>
+  <errorMessage></errorMessage>
+  <includeMessage>false</includeMessage>
+  <includeWarningMessage>false</includeWarningMessage>
+  <includeErrorMessage>true</includeErrorMessage>
+  <includeStatus>true</includeStatus>
+  <includeTimestamp>true</includeTimestamp>
+  <includeExecutionTime>true</includeExecutionTime>
+  <inputFormat>Generic</inputFormat>
+  <jobQueue>JDE__DEFAULT</jobQueue>
+  <scheduleUDOName></scheduleUDOName>
+  <inputTypes>
+    <inputTypes type="Numeric" required="true" useBlankDefault="false">
+      <name>WorkOrderNumber</name>
+      <displayName>WorkOrderNumber</displayName>
+    </inputTypes>
+    <inputTypes type="String" required="true" useBlankDefault="false">
+      <name>WorkOrderType</name>
+      <displayName>WorkOrderType</displayName>
+    </inputTypes>
+    <inputTypes type="String" required="true" useBlankDefault="false">
+      <name>WorkOrderBranch</name>
+      <displayName>WorkOrderBranch</displayName>
+    </inputTypes>
+    <inputTypes type="String" required="true" useBlankDefault="false">
+      <name>WorkOrderBU</name>
+      <displayName>WorkOrderBU</displayName>
+    </inputTypes>
+    <inputTypes type="String" required="true" useBlankDefault="false">
+      <name>WorkOrderStatus</name>
+      <displayName>WorkOrderStatus</displayName>
+    </inputTypes>
+    <inputTypes type="String" required="false" useBlankDefault="false">
+      <name>WorkOrderStatusComment</name>
+      <displayName>WorkOrderStatusComment</displayName>
+    </inputTypes>
+    <inputTypes type="String" required="false" useBlankDefault="false">
+      <name>WorkOrderDescription</name>
+      <displayName>WorkOrderDescription</displayName>
+    </inputTypes>
+    <inputTypes type="String" required="false" useBlankDefault="false">
+      <name>WorkOrderReference1</name>
+      <displayName>WorkOrderReference1</displayName>
+    </inputTypes>
+    <inputTypes type="String" required="false" useBlankDefault="false">
+      <name>WorkOrderReference2</name>
+      <displayName>WorkOrderReference2</displayName>
+    </inputTypes>
+  </inputTypes>
+  <orchestrationSteps>
+    <orchestrationSteps type="ServiceRequest" subType="DATA_REQUEST" iterateOver="">
+      <name>DS_WO_EXISTS</name>
+      <omwObjectName>SRE_2609230009COG</omwObjectName>
+      <transformations>
+        <transformations input="WorkOrderNumber" output="${WorkOrderNumber}" defaultValue=""/>
+        <transformations input="WorkOrderType" output="${WorkOrderType}" defaultValue=""/>
+      </transformations>
+      <continueOnError>false</continueOnError>
+      <additionalErrorText>Work Order Lookup Failed To Execute</additionalErrorText>
+      <exceptionProcess></exceptionProcess>
+      <exceptionProcessName></exceptionProcessName>
+      <exceptionProcessType>NONE</exceptionProcessType>
+      <exProcFireAndForget>false</exProcFireAndForget>
+      <includeRawOutput>false</includeRawOutput>
+      <fireAndForget>false</fireAndForget>
+    </orchestrationSteps>
+    <orchestrationSteps type="Rule" iterateOver="">
+      <name>RL_WO_EXISTS</name>
+      <omwObjectName>RUL_2609230007COG</omwObjectName>
+      <transformations>
+        <transformations input="wo_count" output="ExistingWO" defaultValue=""/>
+      </transformations>
+      <trueActions>
+        <trueActions type="ServiceRequest" subType="DATA_REQUEST" iterateOver="">
+          <name>DS_WO_BUSINESSUNITVALID</name>
+          <omwObjectName>SRE_2609240003COG</omwObjectName>
+          <transformations>
+            <transformations input="WorkOrderBU" output="${WorkOrderBU}" defaultValue=""/>
+          </transformations>
+          <continueOnError>false</continueOnError>
+          <additionalErrorText></additionalErrorText>
+          <exceptionProcess></exceptionProcess>
+          <exceptionProcessName></exceptionProcessName>
+          <exceptionProcessType>NONE</exceptionProcessType>
+          <exProcFireAndForget>false</exProcFireAndForget>
+          <includeRawOutput>false</includeRawOutput>
+          <fireAndForget>false</fireAndForget>
+        </trueActions>
+        <trueActions type="Rule" iterateOver="">
+          <name>RL_WO_BUSINESSUNITVALID</name>
+          <omwObjectName>RUL_2609240001COG</omwObjectName>
+          <transformations>
+            <transformations input="ValidBUCount" output="ProvidedCount" defaultValue=""/>
+          </transformations>
+          <trueActions>
+            <trueActions type="ServiceRequest" subType="DATA_REQUEST" iterateOver="">
+              <name>DS_WO_GETAVAILABLESTATUSES</name>
+              <omwObjectName>SRE_2609240004COG</omwObjectName>
+              <transformations>
+                <transformations input="ExistingType" output="${WOType}" defaultValue=""/>
+                <transformations input="ExistingStatus" output="${WOCurrentStatus}" defaultValue=""/>
+              </transformations>
+              <continueOnError>false</continueOnError>
+              <additionalErrorText></additionalErrorText>
+              <exceptionProcess></exceptionProcess>
+              <exceptionProcessName></exceptionProcessName>
+              <exceptionProcessType>NONE</exceptionProcessType>
+              <exProcFireAndForget>false</exProcFireAndForget>
+              <includeRawOutput>false</includeRawOutput>
+              <fireAndForget>false</fireAndForget>
+            </trueActions>
+            <trueActions type="Rule" iterateOver="">
+              <name>RL_WO_STATUSCHANGEALLOWED</name>
+              <omwObjectName>RUL_2609240003COG</omwObjectName>
+              <transformations>
+                <transformations input="WorkOrderStatus" output="NewStatus" defaultValue=""/>
+                <transformations input="NextStatus" output="NextStatus" defaultValue=""/>
+                <transformations input="AllowedStatus1" output="AllowedStatus1" defaultValue=""/>
+                <transformations input="AllowedStatus2" output="AllowedStatus2" defaultValue=""/>
+                <transformations input="AllowedStatus3" output="AllowedStatus3" defaultValue=""/>
+                <transformations input="AllowedStatus4" output="AllowedStatus4" defaultValue=""/>
+                <transformations input="AllowedStatus5" output="AllowedStatus5" defaultValue=""/>
+                <transformations input="ExistingStatus" output="CurrentStatus" defaultValue=""/>
+                <transformations input="WorkOrderStatus" output="TargetStatus" defaultValue=""/>
+              </transformations>
+              <trueActions>
+                <trueActions type="ServiceRequest" subType="FORM_REQUEST" iterateOver="">
+                  <name>FR_WO_UPDATE</name>
+                  <omwObjectName>SRE_2609230010COG</omwObjectName>
+                  <transformations>
+                    <transformations input="WorkOrderType" output="${WorkOrderType}" defaultValue=""/>
+                    <transformations input="WorkOrderNumber" output="${WorkOrderNumber}" defaultValue=""/>
+                    <transformations input="WorkOrderStatusComment" output="${WorkOrderStatusComment}" defaultValue=""/>
+                    <transformations input="WorkOrderReference1" output="${WorkOrderReference1}" defaultValue=""/>
+                    <transformations input="WorkOrderReference2" output="${WorkOrderReference2}" defaultValue=""/>
+                    <transformations input="WorkOrderStatus" output="${WorkOrderStatus}" defaultValue=""/>
+                    <transformations input="WorkOrderDescription" output="${WorkOrderDescription}" defaultValue=""/>
+                    <transformations input="WorkOrderBU" output="${WorkOrderBU}" defaultValue=""/>
+                    <transformations input="" output="P48201_Version" defaultValue="ZJDE0002"/>
+                  </transformations>
+                  <continueOnError>false</continueOnError>
+                  <additionalErrorText></additionalErrorText>
+                  <exceptionProcess></exceptionProcess>
+                  <exceptionProcessName></exceptionProcessName>
+                  <exceptionProcessType>NONE</exceptionProcessType>
+                  <exProcFireAndForget>false</exProcFireAndForget>
+                  <includeRawOutput>false</includeRawOutput>
+                  <fireAndForget>false</fireAndForget>
+                </trueActions>
+              </trueActions>
+              <continueOnError>false</continueOnError>
+              <additionalErrorText></additionalErrorText>
+              <exceptionProcess></exceptionProcess>
+              <exceptionProcessName></exceptionProcessName>
+              <exceptionProcessType>NONE</exceptionProcessType>
+              <exProcFireAndForget>false</exProcFireAndForget>
+              <includeRawOutput>false</includeRawOutput>
+              <fireAndForget>false</fireAndForget>
+            </trueActions>
+          </trueActions>
+          <continueOnError>false</continueOnError>
+          <additionalErrorText></additionalErrorText>
+          <exceptionProcess></exceptionProcess>
+          <exceptionProcessName></exceptionProcessName>
+          <exceptionProcessType>NONE</exceptionProcessType>
+          <exProcFireAndForget>false</exProcFireAndForget>
+          <includeRawOutput>false</includeRawOutput>
+          <fireAndForget>false</fireAndForget>
+        </trueActions>
+        <trueActions type="ServiceRequest" subType="CUSTOM" iterateOver="">
+          <name>FX_WO_UPDATE_RESPONSE</name>
+          <omwObjectName>SRE_2609240009COG</omwObjectName>
+          <transformations>
+            <transformations input="ValidBUCount" output="UpdateBUCheck" defaultValue=""/>
+            <transformations input="UpdateOrderNumber" output="UpdateOrderNumber" defaultValue=""/>
+          </transformations>
+          <continueOnError>false</continueOnError>
+          <additionalErrorText></additionalErrorText>
+          <exceptionProcess></exceptionProcess>
+          <exceptionProcessName></exceptionProcessName>
+          <exceptionProcessType>NONE</exceptionProcessType>
+          <exProcFireAndForget>false</exProcFireAndForget>
+          <includeRawOutput>false</includeRawOutput>
+          <fireAndForget>false</fireAndForget>
+        </trueActions>
+      </trueActions>
+      <falseActions>
+        <falseActions type="ServiceRequest" subType="DATA_REQUEST" iterateOver="">
+          <name>DS_WO_BUSINESSUNITVALID_CREATE</name>
+          <omwObjectName>SRE_2609240011COG</omwObjectName>
+          <transformations>
+            <transformations input="WorkOrderBU" output="${WorkOrderBU}" defaultValue=""/>
+          </transformations>
+          <continueOnError>false</continueOnError>
+          <additionalErrorText></additionalErrorText>
+          <exceptionProcess></exceptionProcess>
+          <exceptionProcessName></exceptionProcessName>
+          <exceptionProcessType>NONE</exceptionProcessType>
+          <exProcFireAndForget>false</exProcFireAndForget>
+          <includeRawOutput>false</includeRawOutput>
+          <fireAndForget>false</fireAndForget>
+        </falseActions>
+        <falseActions type="Rule" iterateOver="">
+          <name>RL_WO_BUSINESSUNITVALID</name>
+          <omwObjectName>RUL_2609240001COG</omwObjectName>
+          <transformations>
+            <transformations input="ValidBUCountCreate" output="ProvidedCount" defaultValue=""/>
+          </transformations>
+          <trueActions>
+            <trueActions type="ServiceRequest" subType="DATA_REQUEST" iterateOver="">
+              <name>DS_WO_BRANCHPLANTVALID</name>
+              <omwObjectName>SRE_2609240006COG</omwObjectName>
+              <transformations>
+                <transformations input="WorkOrderBranch" output="${WorkOrderBranch}" defaultValue=""/>
+              </transformations>
+              <continueOnError>false</continueOnError>
+              <additionalErrorText></additionalErrorText>
+              <exceptionProcess></exceptionProcess>
+              <exceptionProcessName></exceptionProcessName>
+              <exceptionProcessType>NONE</exceptionProcessType>
+              <exProcFireAndForget>false</exProcFireAndForget>
+              <includeRawOutput>false</includeRawOutput>
+              <fireAndForget>false</fireAndForget>
+            </trueActions>
+            <trueActions type="Rule" iterateOver="">
+              <name>RL_WO_BRANCHPLANTVALID</name>
+              <omwObjectName>RUL_2609240007COG</omwObjectName>
+              <transformations>
+                <transformations input="validBPcount" output="validBPcount" defaultValue=""/>
+              </transformations>
+              <trueActions>
+                <trueActions type="ServiceRequest" subType="DATA_REQUEST" iterateOver="">
+                  <name>DS_WO_STATUSVALID</name>
+                  <omwObjectName>SRE_2609240007COG</omwObjectName>
+                  <transformations>
+                    <transformations input="WorkOrderType" output="${WOType}" defaultValue=""/>
+                    <transformations input="WorkOrderStatus" output="${WOStatus}" defaultValue=""/>
+                  </transformations>
+                  <continueOnError>false</continueOnError>
+                  <additionalErrorText></additionalErrorText>
+                  <exceptionProcess></exceptionProcess>
+                  <exceptionProcessName></exceptionProcessName>
+                  <exceptionProcessType>NONE</exceptionProcessType>
+                  <exProcFireAndForget>false</exProcFireAndForget>
+                  <includeRawOutput>false</includeRawOutput>
+                  <fireAndForget>false</fireAndForget>
+                </trueActions>
+                <trueActions type="Rule" iterateOver="">
+                  <name>RL_WO_STATUSVALID</name>
+                  <omwObjectName>RUL_2609240006COG</omwObjectName>
+                  <transformations>
+                    <transformations input="validSTATUScount" output="validSTATUScount" defaultValue=""/>
+                  </transformations>
+                  <trueActions>
+                    <trueActions type="ServiceRequest" subType="FORM_REQUEST" iterateOver="">
+                      <name>FR_WO_CREATE</name>
+                      <omwObjectName>SRE_2609230006COG</omwObjectName>
+                      <transformations>
+                        <transformations input="WorkOrderNumber" output="Order_Number" defaultValue=""/>
+                        <transformations input="WorkOrderDescription" output="Description" defaultValue=""/>
+                        <transformations input="WorkOrderStatusComment" output="Status_Comment" defaultValue=""/>
+                        <transformations input="WorkOrderReference1" output="Reference" defaultValue=""/>
+                        <transformations input="WorkOrderType" output="Type" defaultValue=""/>
+                        <transformations input="WorkOrderStatus" output="Status" defaultValue=""/>
+                        <transformations input="WorkOrderBranch" output="Branch" defaultValue=""/>
+                        <transformations input="WorkOrderReference2" output="Reference_2" defaultValue=""/>
+                        <transformations input="WorkOrderBU" output="Business_Unit" defaultValue=""/>
+                        <transformations input="" output="P48201_Version" defaultValue="ZJDE0002"/>
+                      </transformations>
+                      <continueOnError>false</continueOnError>
+                      <additionalErrorText></additionalErrorText>
+                      <exceptionProcess></exceptionProcess>
+                      <exceptionProcessName></exceptionProcessName>
+                      <exceptionProcessType>NONE</exceptionProcessType>
+                      <exProcFireAndForget>false</exProcFireAndForget>
+                      <includeRawOutput>false</includeRawOutput>
+                      <fireAndForget>false</fireAndForget>
+                    </trueActions>
+                  </trueActions>
+                  <continueOnError>false</continueOnError>
+                  <additionalErrorText></additionalErrorText>
+                  <exceptionProcess></exceptionProcess>
+                  <exceptionProcessName></exceptionProcessName>
+                  <exceptionProcessType>NONE</exceptionProcessType>
+                  <exProcFireAndForget>false</exProcFireAndForget>
+                  <includeRawOutput>false</includeRawOutput>
+                  <fireAndForget>false</fireAndForget>
+                </trueActions>
+              </trueActions>
+              <continueOnError>false</continueOnError>
+              <additionalErrorText></additionalErrorText>
+              <exceptionProcess></exceptionProcess>
+              <exceptionProcessName></exceptionProcessName>
+              <exceptionProcessType>NONE</exceptionProcessType>
+              <exProcFireAndForget>false</exProcFireAndForget>
+              <includeRawOutput>false</includeRawOutput>
+              <fireAndForget>false</fireAndForget>
+            </trueActions>
+          </trueActions>
+          <continueOnError>false</continueOnError>
+          <additionalErrorText></additionalErrorText>
+          <exceptionProcess></exceptionProcess>
+          <exceptionProcessName></exceptionProcessName>
+          <exceptionProcessType>NONE</exceptionProcessType>
+          <exProcFireAndForget>false</exProcFireAndForget>
+          <includeRawOutput>false</includeRawOutput>
+          <fireAndForget>false</fireAndForget>
+        </falseActions>
+        <falseActions type="ServiceRequest" subType="CUSTOM" iterateOver="">
+          <name>FX_WO_CREATE_RESPONSE</name>
+          <omwObjectName>SRE_2609240008COG</omwObjectName>
+          <transformations>
+            <transformations input="validBPcount" output="CreateBPCheck" defaultValue=""/>
+            <transformations input="validSTATUScount" output="CreateStatusCheck" defaultValue=""/>
+            <transformations input="ValidBUCountCreate" output="CreateBUCheck" defaultValue=""/>
+            <transformations input="CreateOrderNumber" output="CreateOrderNumber" defaultValue=""/>
+          </transformations>
+          <continueOnError>false</continueOnError>
+          <additionalErrorText></additionalErrorText>
+          <exceptionProcess></exceptionProcess>
+          <exceptionProcessName></exceptionProcessName>
+          <exceptionProcessType>NONE</exceptionProcessType>
+          <exProcFireAndForget>false</exProcFireAndForget>
+          <includeRawOutput>false</includeRawOutput>
+          <fireAndForget>false</fireAndForget>
+        </falseActions>
+      </falseActions>
+      <continueOnError>false</continueOnError>
+      <additionalErrorText></additionalErrorText>
+      <exceptionProcess></exceptionProcess>
+      <exceptionProcessName></exceptionProcessName>
+      <exceptionProcessType>NONE</exceptionProcessType>
+      <exProcFireAndForget>false</exProcFireAndForget>
+      <includeRawOutput>false</includeRawOutput>
+      <fireAndForget>false</fireAndForget>
+    </orchestrationSteps>
+    <orchestrationSteps type="ServiceRequest" subType="CUSTOM" iterateOver="">
+      <name>FX_WO_FINAL_RESPONSE</name>
+      <omwObjectName>SRE_2609240012COG</omwObjectName>
+      <transformations>
+        <transformations input="CreateStatus" output="CreateStatus" defaultValue=""/>
+        <transformations input="CreateAction" output="CreateAction" defaultValue=""/>
+        <transformations input="CreateErrors" output="CreateErrors" defaultValue=""/>
+        <transformations input="UpdateStatus" output="UpdateStatus" defaultValue=""/>
+        <transformations input="UpdateAction" output="UpdateAction" defaultValue=""/>
+        <transformations input="UpdateErrors" output="UpdateErrors" defaultValue=""/>
+      </transformations>
+      <outputMappings>
+        <formOutputMappings>
+          <formOutputMappings>
+            <formIndex>0</formIndex>
+            <outputMappings>
+              <outputMappings>
+                <name>Action</name>
+                <id>Action</id>
+                <type>String</type>
+              </outputMappings>
+              <outputMappings>
+                <name>Status</name>
+                <id>Status</id>
+                <type>String</type>
+              </outputMappings>
+              <outputMappings>
+                <name>Errors</name>
+                <id>Errors</id>
+                <type>String</type>
+              </outputMappings>
+            </outputMappings>
+          </formOutputMappings>
+        </formOutputMappings>
+      </outputMappings>
+      <continueOnError>false</continueOnError>
+      <additionalErrorText></additionalErrorText>
+      <exceptionProcess></exceptionProcess>
+      <exceptionProcessName></exceptionProcessName>
+      <exceptionProcessType>NONE</exceptionProcessType>
+      <exProcFireAndForget>false</exProcFireAndForget>
+      <includeRawOutput>false</includeRawOutput>
+      <fireAndForget>false</fireAndForget>
+    </orchestrationSteps>
+  </orchestrationSteps>
+  <inputsToOutputMappings>
+    <inputsToOutputMappings>
+      <name>WorkOrderNumber</name>
+      <id>WorkOrderNumber</id>
+      <type>Numeric</type>
+    </inputsToOutputMappings>
+  </inputsToOutputMappings>
+</Orchestration>

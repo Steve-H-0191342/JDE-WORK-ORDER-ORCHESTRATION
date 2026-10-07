@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Rule matchType="matchAll">
+  <omwObjectName>RUL_2609240001COG</omwObjectName>
+  <studioVersion>9.2.5.6</studioVersion>
+  <name>RL_WO_BUSINESSUNITVALID</name>
+  <shortDesc>RL_WO_BUSINESSUNITVALID</shortDesc>
+  <productCode>55</productCode>
+  <locale>en</locale>
+  <updateTime>1790259514396</updateTime>
+  <scriptLanguage>groovy</scriptLanguage>
+  <conditions>
+    <conditions operator=">" type="Numeric">
+      <value1>
+        <value>ProvidedCount</value>
+      </value1>
+      <value2 type="Numeric" literalValue="true">
+        <value>0</value>
+      </value2>
+    </conditions>
+  </conditions>
+</Rule>

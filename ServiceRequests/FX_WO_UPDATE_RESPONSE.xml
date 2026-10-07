@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ServiceRequest>
+  <omwObjectName>SRE_2609240009COG</omwObjectName>
+  <studioVersion>9.2.5.6</studioVersion>
+  <name>FX_WO_UPDATE_RESPONSE</name>
+  <shortDesc>FX_WO_UPDATE_RESPONSE</shortDesc>
+  <productCode>55</productCode>
+  <locale>en</locale>
+  <updateTime>1790278217620</updateTime>
+  <group>0</group>
+  <appStack>false</appStack>
+  <returnFromAllForms>false</returnFromAllForms>
+  <bypassER>false</bypassER>
+  <serviceRequestSteps>
+    <serviceRequestSteps type="customServiceRequest">
+      <attributesToSet>
+        <attributesToSet name="UpdateBUCheck">
+          <input>UpdateBUCheck</input>
+          <defaultValue>
+            <value>1</value>
+          </defaultValue>
+        </attributesToSet>
+        <attributesToSet name="UpdateOrderNumber">
+          <input>UpdateOrderNumber</input>
+          <defaultValue>
+            <value>T</value>
+          </defaultValue>
+        </attributesToSet>
+      </attributesToSet>
+      <scriptLanguage>groovy</scriptLanguage>
+      <groovyMethod>import com.oracle.e1.common.OrchestrationAttributes;
+import java.text.SimpleDateFormat;
+import groovy.json.*;
+
+HashMap&lt;String, Object> main(OrchestrationAttributes orchAttr, HashMap inputMap)
+{
+HashMap&lt;String, Object> returnMap = new HashMap&lt;String, Object>();
+
+
+BigDecimal UpdateBUCheck = null;
+String UpdateBUCheck_str = (String)inputMap.get("UpdateBUCheck");
+if(UpdateBUCheck_str != null &amp;&amp; !UpdateBUCheck_str.trim().isEmpty())
+{
+UpdateBUCheck = new BigDecimal(UpdateBUCheck_str);
+}    
+
+String UpdateOrderNumber = (String)inputMap.get("UpdateOrderNumber");
+
+String Status = "UNKNOWN";
+String Action = "UNKNOWN";
+String Errors = "";
+
+if(UpdateBUCheck == 0) //BU check did NOT Pass
+{
+Action = "ERROR";
+Status = "FAILURE";
+Errors = Errors + "Supplied Business Unit Does Not Exist or Is Not Available For Posting\n";           
+}
+
+if(UpdateOrderNumber!=null &amp;&amp; !UpdateOrderNumber.trim().isEmpty()) //A value is only returned if the update ran successfully
+{
+Action = "UPDATE";
+Status = "SUCCESS";
+}
+else //If NO value was returned then the Update did not run
+{
+if(Status != "FAILURE") //Assume it was a status issue, because if it is was true error then this code would not be executed.
+{
+Action = "ERROR";
+Status = "FAILURE";
+Errors = Errors + "Supplied Status is not valid or Is Not Valid to Transition to\n";           
+}
+}
+
+returnMap.put("Action", Action);        
+returnMap.put("Status", Status);   
+returnMap.put("Errors", Errors);   
+
+return returnMap;
+}</groovyMethod>
+      <outputs>
+        <outputs variableName="UpdateAction">
+          <output>Action</output>
+        </outputs>
+        <outputs variableName="UpdateStatus">
+          <output>Status</output>
+        </outputs>
+        <outputs variableName="UpdateErrors">
+          <output>Errors</output>
+        </outputs>
+      </outputs>
+      <array>Errors</array>
+      <isAsynch>false</isAsynch>
+    </serviceRequestSteps>
+  </serviceRequestSteps>
+</ServiceRequest>

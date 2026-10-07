@@ -1,0 +1,111 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ServiceRequest>
+  <omwObjectName>SRE_2609240012COG</omwObjectName>
+  <studioVersion>9.2.5.6</studioVersion>
+  <name>FX_WO_FINAL_RESPONSE</name>
+  <shortDesc>FX_WO_CREATEFINALRESPONSE</shortDesc>
+  <productCode>55</productCode>
+  <locale>en</locale>
+  <updateTime>1790278041885</updateTime>
+  <group>0</group>
+  <appStack>false</appStack>
+  <returnFromAllForms>false</returnFromAllForms>
+  <bypassER>false</bypassER>
+  <serviceRequestSteps>
+    <serviceRequestSteps type="customServiceRequest">
+      <attributesToSet>
+        <attributesToSet name="CreateStatus">
+          <input>CreateStatus</input>
+          <defaultValue>
+            <value></value>
+          </defaultValue>
+        </attributesToSet>
+        <attributesToSet name="CreateAction">
+          <input>CreateAction</input>
+          <defaultValue>
+            <value></value>
+          </defaultValue>
+        </attributesToSet>
+        <attributesToSet name="CreateErrors">
+          <input>CreateErrors</input>
+          <defaultValue>
+            <value></value>
+          </defaultValue>
+        </attributesToSet>
+        <attributesToSet name="UpdateStatus">
+          <input>UpdateStatus</input>
+          <defaultValue>
+            <value></value>
+          </defaultValue>
+        </attributesToSet>
+        <attributesToSet name="UpdateAction">
+          <input>UpdateAction</input>
+          <defaultValue>
+            <value></value>
+          </defaultValue>
+        </attributesToSet>
+        <attributesToSet name="UpdateErrors">
+          <input>UpdateErrors</input>
+          <defaultValue>
+            <value></value>
+          </defaultValue>
+        </attributesToSet>
+      </attributesToSet>
+      <scriptLanguage>groovy</scriptLanguage>
+      <groovyMethod>import com.oracle.e1.common.OrchestrationAttributes;
+import java.text.SimpleDateFormat;
+import groovy.json.*;
+
+HashMap&lt;String, Object> main(OrchestrationAttributes orchAttr, HashMap inputMap)
+{
+HashMap&lt;String, Object> returnMap = new HashMap&lt;String, Object>();
+
+String CreateStatus = (String)inputMap.get("CreateStatus");
+String CreateAction = (String) inputMap.get("CreateAction");
+String CreateErrors = (String) inputMap.get("CreateErrors");
+String UpdateStatus = (String)inputMap.get("UpdateStatus");
+String UpdateAction = (String) inputMap.get("UpdateAction");
+String UpdateErrors = (String) inputMap.get("UpdateErrors");    
+
+String Status = "FAILURE";
+String Action = "UNKNOWN";
+String Errors = "";
+
+//Only one set of variables should be populated, so whichever one is, use that one.
+
+if(CreateStatus!=null &amp;&amp; !CreateStatus.trim().isEmpty()) //Create
+{
+Action = CreateAction;
+Status = CreateStatus;
+Errors = CreateErrors;
+}    
+
+if(UpdateStatus!=null &amp;&amp; !UpdateStatus.trim().isEmpty()) //Update
+{
+Action = UpdateAction;
+Status = UpdateStatus;
+Errors = UpdateErrors;
+}        
+
+returnMap.put("Action", Action);        
+returnMap.put("Status", Status);   
+returnMap.put("Errors", Errors);   
+
+return returnMap;
+}</groovyMethod>
+      <outputs>
+        <outputs variableName="Action">
+          <output>Action</output>
+        </outputs>
+        <outputs variableName="Status">
+          <output>Status</output>
+        </outputs>
+        <outputs variableName="Errors">
+          <output>Errors</output>
+        </outputs>
+      </outputs>
+      <array>Errors</array>
+      <isAsynch>false</isAsynch>
+    </serviceRequestSteps>
+  </serviceRequestSteps>
+</ServiceRequest>

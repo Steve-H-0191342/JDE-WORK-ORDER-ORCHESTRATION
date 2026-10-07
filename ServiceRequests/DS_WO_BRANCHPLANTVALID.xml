@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ServiceRequest>
+  <omwObjectName>SRE_2609240006COG</omwObjectName>
+  <studioVersion>9.2.5.6</studioVersion>
+  <name>DS_WO_BRANCHPLANTVALID</name>
+  <shortDesc>DS_WO_BRANCHPLANTVALID</shortDesc>
+  <productCode>55</productCode>
+  <locale>en</locale>
+  <updateTime>1790261672397</updateTime>
+  <group>0</group>
+  <appStack>false</appStack>
+  <returnFromAllForms>false</returnFromAllForms>
+  <bypassER>false</bypassER>
+  <serviceRequestSteps>
+    <serviceRequestSteps type="dataRequest">
+      <dataRequest>
+        <outputType>GRID_DATA</outputType>
+        <aliasNaming>true</aliasNaming>
+        <showActionControls>false</showActionControls>
+        <includeTimings>false</includeTimings>
+        <allowCache>false</allowCache>
+        <forceUpdate>false</forceUpdate>
+        <cacheTime>0</cacheTime>
+        <setDirtyOnly>false</setDirtyOnly>
+        <userPreferenceDateTimeFormat>false</userPreferenceDateTimeFormat>
+        <enableNextPageProcessing>false</enableNextPageProcessing>
+        <maxPageSize>NO MAX</maxPageSize>
+        <returnControlIDs></returnControlIDs>
+        <variableNames></variableNames>
+        <query>
+          <complexQuery>
+            <complexQuery>
+              <query>
+                <condition>
+                  <condition>
+                    <value>
+                      <value>
+                        <content>${WorkOrderBranch}</content>
+                        <specialValueId>0</specialValueId>
+                        <specialValueString>LITERAL</specialValueString>
+                      </value>
+                    </value>
+                    <controlId>F0006.MCU</controlId>
+                    <operator>0</operator>
+                    <operatorString>EQUAL</operatorString>
+                  </condition>
+                </condition>
+                <matchType>0</matchType>
+              </query>
+            </complexQuery>
+          </complexQuery>
+          <autoFind>true</autoFind>
+          <autoClear>true</autoClear>
+        </query>
+        <batchDataRequest>false</batchDataRequest>
+        <targetName>F0006</targetName>
+        <targetType>table</targetType>
+        <dataServiceType>BROWSE</dataServiceType>
+        <monitorService>false</monitorService>
+        <pageSize>1000</pageSize>
+        <includeCount>true</includeCount>
+        <countVariableName>validBPcount</countVariableName>
+        <includeEmptyQueryValues>true</includeEmptyQueryValues>
+      </dataRequest>
+    </serviceRequestSteps>
+  </serviceRequestSteps>
+</ServiceRequest>
